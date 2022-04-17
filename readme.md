@@ -1,6 +1,8 @@
 <h1>Tasks JS</h1>
 
-<h3>How to use</h3>
+<p>Tasks and their solutions JavaScript.</p>
+
+<h3>Install</h3>
 
 <ol>
 	<li><strong>Clone</strong> or <strong>Download</strong> from GitHub</li>
