@@ -1,8 +1,13 @@
+# Dependecies
 /**/node_modules/
+
+# IDE
 /.idea/
+
 /dist/
 /.git/
-/app/css/
+
+# Misc
 /**/_backstage
 /**/package-lock.json
 /**/Thumbs.db
