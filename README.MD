@@ -13,6 +13,7 @@
 <h3>Sources</h3>
 
 <ol>
-	<li><a href="https://t.me/js_test">JavaScript test</a> (Ended: December 26, 2019)</li>
+	<li><a href="https://www.youtube.com/watch?v=x-EZy6gu_38">Розв'язання задач на СПІВБЕСІДУ. Практичний курс. Junior/Middle</a> (Video) (Complete)</li>
+	<li><a href="https://t.me/js_test">JavaScript test</a> (Telegram chanel) (Last check: January 27, 2020)</li>
 </ol>
 
