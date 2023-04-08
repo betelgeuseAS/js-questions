@@ -293,7 +293,7 @@
     //
     // return true
 
-    // Варіант 1
+    // Варіант 2
     // const chars = new Set()
     //
     // for (let i = 0; i < str.length; i++) {
