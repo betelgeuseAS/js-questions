@@ -830,6 +830,232 @@
 
 
 
+// Найдите числа, которые делятся на заданное число
+(function () {
+  // Variant 1
+  // const divisibleBy = (numbers, divisor) => {
+  //   const result = [];
+  //
+  //   numbers.forEach(item => {
+  //     if (item % divisor === 0) result.push(item);
+  //   });
+  //
+  //   return result;
+  // }
+  // console.log(divisibleBy([1, 2, 3, 4, 5, 6], 2));
+
+  // Variant 2
+  const divisibleBy = (numbers, divisor) => numbers.filter(item => item % divisor === 0);
+  console.log(divisibleBy([1, 2, 3, 4, 5, 6], 2));
+});
+
+
+
+// Створити функцію id яка буде повертати значення на один більше. Наприклад:
+// console.log(id()); // 0
+// console.log(id()); // 1
+// console.log(id()); // 2
+// console.log(id()); // 3
+// console.log(id()); // 4
+(function () {
+  // Variant 1
+  // function id() {
+  //   let id = Symbol.for("id");
+  //
+  //   id in window ? window[id] += 1 : window[id] = 0;
+  //
+  //   return window[id];
+  // }
+  //
+  // console.log(id());
+  // console.log(id());
+  // console.log(id());
+
+  // Variant 2
+  function getId() {
+    let id = 0;
+
+    return function() {
+      id += 1;
+      return id;
+    };
+  }
+
+  const id = getId();
+
+  console.log(id());
+  console.log(id());
+  console.log(id());
+});
+
+
+
+// Remove duplicates in an Array
+(function () {
+  // Method 1 - Use Set
+  // let chars = ['A', 'B', 'A', 'C', 'B'];
+  // let uniqueChars = [...new Set(chars)];
+  //
+  // console.log(uniqueChars);
+
+  // Method 2 - Using the indexOf() and filter() methods
+  // let chars = ['A', 'B', 'A', 'C', 'B'];
+  //
+  // let dupChars = chars.filter((element, index) => {
+  //   return chars.indexOf(element) !== index;
+  // });
+  //
+  // console.log(dupChars);
+
+  // Method 3 - Using the includes() and forEach() methods
+  let chars = ['A', 'B', 'A', 'C', 'B'];
+
+  let uniqueChars = [];
+  chars.forEach((element) => {
+    if (!uniqueChars.includes(element)) {
+      uniqueChars.push(element);
+    }
+  });
+
+  console.log(uniqueChars);
+});
+
+
+
+// Capitalize first letter
+(function () {
+  // Method 1
+  // const capitalizeFirstLetter = (string) => string[0].toUpperCase() + ststringr.substr(1);
+
+  // Method 2
+  const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + string.slice(1);
+});
+
+
+
+// Сортування
+(function () {
+  // Method 1
+  // const arr = [7, 8, 1, 3, 8, 7, 9, 3];
+  // const sorted = arr.sort((a, b) => {
+  //   if (a > b) return 1;
+  //   if (a < b) return -1;
+  //
+  //   return 0
+  // });
+
+  // Method 2
+  const arr = [7, 8, 1, 3, 8, 7, 9, 3];
+  const sorted = arr.sort((a, b) => a-b); // a-b -> asc, b-a ->desc
+
+  console.log(sorted);
+});
+
+
+
+// Маємо url рядок такого типу:
+// "user.name.fristname=Bob&user.name.lastname=Smith&user.favoritecolor=Light%20Blue&experiments.theme=dark"
+//
+// Напишіть функцію яка повертає цей рядок в такому вигляді:
+// // {
+// //   user: {
+// //     name: {
+// //       fristname: "Bob",
+// //       lastname: "Smith"
+// //     },
+// //     favoritecolor: "Light Blue"
+// //   },
+// //   experiments: {
+// //     theme: "dark"
+// //   }
+// // }
+(function () {
+  const inData = "user.name.fristname=Bob&user.name.lastname=Smith&user.favoritecolor=Light%20Blue&experiments.theme=dark";
+
+  function prepare(str) {
+    const parts = str.split("&");
+    const result = {};
+
+    parts.forEach((itemPart) => {
+      const nameValueParts = itemPart.split("=");
+      const name = nameValueParts[0];
+      const value = decodeURI(nameValueParts[1]);
+
+      result[name] = value;
+    });
+
+    return result;
+  }
+
+  function deepen(obj) {
+    const result = {};
+
+    // For each object path (property key) in the object
+    for (const objectPath in obj) {
+      // Split path into component parts
+      const parts = objectPath.split(".");
+
+      // Create sub-objects along path as needed
+      let target = result;
+      while (parts.length > 1) {
+        const part = parts.shift();
+        target = target[part] = target[part] || {};
+      }
+
+      // Set value at end of path
+      target[parts[0]] = obj[objectPath];
+    }
+
+    return result;
+  }
+
+  function queryObjective(str) {
+    const prepared = prepare(str);
+    const result = deepen(prepared);
+
+    console.log("Result: ", result);
+
+    return result;
+  }
+
+  queryObjective(inData);
+});
+
+
+
+// Знайти щасливе число. Щасливе число те яке в рядку зустрічається скільки разів
+// скільки ж і є це саме число. Тобто із числа/рядка 221333 щасливе число є 3.
+// Якщо декілька щасливих чисел, то повернути найбільше, якщо немає щасливого
+// числа, то повернути нуль
+(function () {
+  function findLucky(numbers) {
+    if (typeof numbers === "number") numbers = String(numbers);
+
+    const mapObject = {};
+
+    [...numbers].forEach((item, index) => {
+      if (!mapObject.hasOwnProperty(item)) mapObject[item] = 0;
+
+      mapObject[item] += 1;
+    });
+
+    const goodNumbers = [];
+
+    for (const property in mapObject) {
+      if (Number(property) === Number(mapObject[property])) {
+        goodNumbers.push(Number(property));
+      }
+    }
+
+    return goodNumbers.length > 0 ? Math.max(...goodNumbers) : 0;
+  }
+
+  const numbers = "11255552533";
+  console.log("Result: ", findLucky(numbers));
+});
+
+
+
 // ...
 (function () {
 
