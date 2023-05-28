@@ -1,6 +1,5 @@
-// ...
+// Дістати з локального storage поле settings
 (function () {
-  // Дістати з локального storage поле settings
   // chrome.storage.local.get([ 'settings' ], (result) => {
   //   console.log('settings: ', result.settings);
   // });

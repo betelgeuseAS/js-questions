@@ -1,3 +1,20 @@
+// IIFE (Immediately Invoked Function Expression)
+(function () {
+  (function () {
+    // …
+  })();
+
+  (() => {
+    // …
+  })();
+
+  (async () => {
+    // …
+  })();
+});
+
+
+
 // How to detect file extension in a string
 (function () {
   const getExtensionFromPath = (filename) => {
