@@ -1,6 +1,6 @@
-<h1>Global JavaScript</h1>
+<h1>Tasks JavaScript</h1>
 
-<p>Algorithms, data structures, patterns and tricks of JavaScript, React, Node.</p>
+<p>Tasks and tricks of JavaScript, React, Node.</p>
 
 <h3>Install</h3>
 
