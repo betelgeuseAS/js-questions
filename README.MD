@@ -1,6 +1,6 @@
 <h1>Tasks JavaScript</h1>
 
-<p>Tasks and tricks of JavaScript, React, Node.</p>
+<p>Tasks & Tricks & Best Practices of JavaScript, React, Node.</p>
 
 <h3>Install</h3>
 

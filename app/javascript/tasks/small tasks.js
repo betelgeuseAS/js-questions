@@ -1078,6 +1078,36 @@
 
 
 
+// Поміняти місмцями два значення
+(function () {
+  // 1. Використання тимчасової змінної
+  function swapWithTemp(num1, num2) {
+    let temp = num1;
+
+    num1 = num2;
+    num2 = temp;
+  }
+
+  // 2. Використання додавання та віднімання
+  function swapWithPlusMinus(num1, num2) {
+    num1 = num1 + num2;
+    num2 = num1 - num2;
+    num1 = num1 - num2;
+  }
+
+  // 3. Використання присвоювання всередині масиву
+  function swapWithArray(num1, num2) {
+    num2 = [num1, num1 = num2][0];
+  }
+
+  // 4. Використання деструктуризації
+  function swapWithDestructuring(num1, num2) {
+    [num1, num2] = [num2, num1];
+  }
+});
+
+
+
 // ...
 (function () {
 
