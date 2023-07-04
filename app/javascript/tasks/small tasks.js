@@ -1108,6 +1108,28 @@
 
 
 
+// Замикання (Closures)
+(function () {
+  function sum(num) {
+    let result = 0;
+
+    const calculate = (num) => {
+      if (num === undefined) return result;
+      result += num;
+
+      return calculate;
+    }
+
+    return calculate(num);
+  }
+
+  console.log(sum()); // 0
+  console.log(sum(2)()); // 2
+  console.log(sum(2)(3)()); // 5
+});
+
+
+
 // ...
 (function () {
 
