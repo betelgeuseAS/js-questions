@@ -168,6 +168,73 @@
 
 
 
+// Remove special characters
+(function () {
+  const removeSpecialCharacters = (value) => {
+    return value.replace(/[<>:"|?*]/g, '');
+  };
+});
+
+
+
+// Як працювати з async/await у циклах
+(function () {
+  // Функції для прикладу
+  function delay() {
+    return new Promise(resolve => setTimeout(resolve, 300));
+  }
+
+  async function delayedLog(item) {
+    // Ми можемо використовувати await для Promise який повертається з delay
+    await delay();
+    console.log(item);
+  }
+
+  // Синхронні цикли
+  for (var i = 0; i < array.length; i++) {
+    var item = array[i];
+    // Робимо що-небудь з item
+  }
+  // Або
+  array.forEach((item) => {
+    // Робимо що-небудь з item
+  });
+
+  // Асинхронні цикли
+  // 1. Не чекати результату виконання
+  // forEach не буде чекати виконання завершення завдання. forEach - синхронна операція.
+  async function processArray(array) {
+    array.forEach(async (item) => {
+      await delayedLog(item);
+    });
+    console.log('Done!');
+  } // Результат: Done! 1 2 3
+  // 2. Опрацювання циклу послідовно
+  // Щоб дочекатися результату виконання тіла циклу нам потрібно повернутися до циклу "for".
+  // Але цього разу ми використовуватимемо його нову версію з конструкцією for..of (Спасибі Iteration Protocol):
+  async function processArray(array) {
+    for (const item of array) {
+      await delayedLog(item);
+    }
+    console.log('Done!');
+  } // Результат: 1 2 3 Done!
+  // 3. Обробка циклу паралельно
+  // Цей код може запустити кілька delayLog завдань паралельно. Але будьте обережні з великими масивами.
+  // Занадто багато завдань може бути занадто важко для CPU і пам'яті.
+  async function processArray(array) {
+    // Робимо "map" масиву в проміси
+    const promises = array.map(delayedLog);
+    // Чекаємо коли всі проміси будуть виконані
+    await Promise.all(promises);
+    console.log('Done!');
+  }
+  // Не плутайте "паралельні завдання" з прикладу з реальною паралельністю та потоками. Цей код не
+  // гарантує паралельного виконання. Все залежатиме від тіла циклу (у прикладі це delayedLog).
+  // Запити мережі, webworkers і деякі інші завдання можуть бути виконані паралельно.
+});
+
+
+
 // ...
 (function () {
 
