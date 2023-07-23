@@ -99,6 +99,62 @@
 
 
 
+// Disable console.log() in production and staging
+(function () {
+  // utils/remove-console.js
+  export const GlobalDebug = (function () {
+    var savedConsole = console;
+
+    /**
+     * @param {boolean} debugOn
+     * @param {boolean} suppressAll
+     */
+    return function (debugOn, suppressAll) {
+      var suppress = suppressAll || false;
+      if (debugOn === false) {
+        // Supress the default console functionality
+        console = {};
+        console.log = function () {};
+        // Supress all type of consoles
+        if (suppress) {
+          console.info = function () {};
+          console.warn = function () {};
+          console.error = function () {};
+        } else {
+          console.info = savedConsole.info;
+          console.warn = savedConsole.warn;
+          console.error = savedConsole.error;
+        }
+      } else {
+        console = savedConsole;
+      }
+    };
+  })();
+
+  // App.jsx
+  import React, { Suspense, useEffect } from "react";
+  // import { GlobalDebug } from "utils/remove-console";
+
+  function App() {
+    useEffect(() => {
+      (process.env.NODE_ENV === "production" || process.env.REACT_APP_ENV === "STAGING")
+      && GlobalDebug(false);
+    }, []);
+
+    console.log("I am just another dummy console log, suppose to be suppressed 🙂");
+
+    return (
+      <Suspense fallback={<h3>Loading...</h3>}>
+        <YourComponentsHere />
+      </Suspense>
+    );
+  }
+
+  export default App;
+});
+
+
+
 // ...
 (function () {
 
