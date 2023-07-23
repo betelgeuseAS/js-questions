@@ -735,6 +735,13 @@
 
 
 
+// Disable consoles
+(function () {
+  console.log = console.warn = console.error = () => {};
+});
+
+
+
 // ...
 (function () {
 

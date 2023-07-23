@@ -235,6 +235,155 @@
 
 
 
+// Get type and size file via fetch:
+(async function () {
+  const getКesolutionByUrl = async (url) => {
+    return new Promise((resolve, reject) => {
+      const img = new Image()
+
+      img.onload = function() { resolve({ width: this.width, height: this.height }); }
+      img.onerror = function() { reject(false); }
+
+      img.src = url
+    });
+  }
+
+  const getSizeAndTypeByUrl = async (url) => {
+    try {
+      const response = await fetch(url)
+        .then((response) => {
+          if (response.status >= 400 && response.status < 600) throw new Error('Bad response from server');
+
+          return response;
+        }).catch((error) => { return false; });
+
+      if (!response) return false;
+
+      const data = await response.blob();
+
+      return { size: data.size, type: data.type };
+    } catch (error) { return false; }
+  }
+
+  const url = 'https://images.unsplash.com/photo-1689913834525-d5796e2a050a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=387&q=80';
+
+  console.log(await getКesolutionByUrl(url));
+  console.log(await getSizeAndTypeByUrl(url));
+});
+
+
+
+// Work with images: grab, get base64, get resolution
+(function () {
+  const getImageBase64 = (url) => new Promise((resolve) => {
+    const img = new Image();
+
+    img.setAttribute('crossorigin', 'anonymous');
+
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+
+      canvas.width = img.width;
+      canvas.height = img.height;
+
+      const ctx = canvas.getContext('2d');
+
+      ctx.drawImage(img, 0, 0);
+
+      const dataURL = canvas.toDataURL('image/png');
+
+      resolve(dataURL);
+    };
+
+    img.src = url;
+  });
+
+  const getImageType = (src) => src.split(';')[0].split('/')[1]; // 'jpeg' 'png' 'webp' 'svg+xml' 'gif'
+
+  const getImageResolution = (src) => new Promise((resolved) => {
+    const image = new Image();
+
+    image.onload = function () {
+      image.width > 100 && image.height > 100
+        ? resolved({ width: image.width, height: image.height })
+        : resolved(false);
+    };
+
+    image.src = src;
+  });
+
+  const processImage = async (imageElement) => {
+    const imageLink = imageElement?.src || imageElement.getAttribute('data-src');
+
+    if (!imageLink) return null;
+
+    const src = imageLink.startsWith('http') ? await getImageBase64(imageLink) : imageLink;
+    const type = getImageType(src);
+    const size = await getImageSize(src);
+
+    const processedImage = (src && size)
+      ? { src, type, width: size?.width, height: size?.height }
+      : null;
+
+    return processedImage;
+  };
+
+  const grabImages = (callback) => {
+    const foundImages = [ ...document.getElementsByTagName('img') ];
+
+    Promise.all(foundImages.map((image) => processImage(image))).then((response) => {
+      callback(response);
+    }).catch((error) => {});
+  }
+});
+
+
+
+// Singelton pattern
+(function () {
+  class Store {
+    constructor() {
+      if (!Store._instance) {
+        Store._instance = this;
+
+        this.values = [];
+      }
+
+      return Store._instance;
+    }
+
+    static getInstance() { return this._instance; }
+
+    saveValue(value) { if (value) this.values.push(value); }
+
+    getValues() { return this.values; }
+  }
+
+  new Store();
+
+  const values = Store.getInstance().getValues();
+
+  console.log(values);
+});
+
+
+
+// Use import / export in js
+(function () {
+  // index.html
+  // <script src="js/theme.js" type="module"></script>
+
+  // dom.js
+  // class dom {}
+  // export { dom };
+
+  // theme.js
+  // import { dom } from './dom.js';
+  // ...
+});
+
+
+
 // ...
 (function () {
 
