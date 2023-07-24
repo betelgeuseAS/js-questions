@@ -16,6 +16,17 @@
 
 
 
+// Get active tab
+(function () {
+  // const getActiveTab = async () => {
+  //   const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
+  //
+  //   return tab;
+  // }
+})();
+
+
+
 // ...
 (function () {
 

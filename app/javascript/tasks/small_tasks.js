@@ -1130,6 +1130,202 @@
 
 
 
+// Чи однакові символи в рядках
+// dog dgo -> true
+// dog dfo -> false
+// doog ddog -> false
+(function () {
+  const isOrder = (firstString, secondString) => {
+    // Variant 1
+    // if (firstString.length !== secondString.length) return false;
+
+    // const firstReduce = [...firstString].reduce((accumulator, currentValue) => {
+    //   return accumulator += currentValue.charCodeAt(0);
+    // }, 0);
+
+    // const seconsdReduce = [...secondString].reduce((accumulator, currentValue) => {
+    //   return accumulator += currentValue.charCodeAt(0);
+    // }, 0);
+
+    // return firstReduce === seconsdReduce;
+
+    // Variant 2
+    const letters1 = [...firstString].sort();
+    const letters2 = [...secondString].sort();
+
+    return letters1.join() === letters2.join();
+  };
+
+  console.log(isOrder("dog", "dgo"));
+  console.log(isOrder("dog", "dfo"));
+  console.log(isOrder("doog", "ddog"));
+});
+
+
+
+// Реалізувати flatten метод
+(function () {
+  function flatten(array) {
+    let result = [];
+
+    for (let i = 0; i < array.length; i++) {
+      // if(Array.isArray(array[i])) {
+      //   result = [...result, ...flatten(array[i])];
+      // } else {
+      //   result = [...result, array[i]];
+      // }
+
+      const extracted = Array.isArray(array[i]) ? flatten(array[i]) : [array[i]];
+
+      result = [...result, ...extracted];
+    }
+
+    return result;
+  }
+
+  console.log(flatten([[1], [[2, 3]], [[[4]]]])); // [1, 2, 3, 4]
+});
+
+
+
+// Remove dupes characters in a string
+(function () {
+  function removeDupes(str) {
+    return [...new Set(str)].join('');
+  }
+
+  console.log(removeDupes("abcd")); // 'abcd'
+  console.log(removeDupes("abcddcba")); // 'abcd'
+});
+
+
+
+// Що буде виведено?
+(function () {
+  let promise = new Promise(function (resolve, reject) {
+    resolve(1);
+
+    setTimeout(() => resolve(2), 1000);
+  });
+
+  promise.then(console.log); // 1
+});
+
+
+
+// Що буде виведено?
+(function () {
+  const length = 4;
+  const numbers = [];
+
+  for (var i = 0; i < length; i++) {
+    numbers.push(i + 1);
+  }
+
+  console.log(numbers); // [1, 2, 3, 4]
+});
+
+
+
+// Знайти найвигідніший день купівлі та продажу зерна
+(function () {
+  function findProfit(prices) {
+    if (!(Array.isArray(prices)
+      && prices.length >= 2)) {
+      return [];
+    }
+
+    let buyDayIndex = 0;
+    let sellDayIndex = 1;
+
+    for (let i = 0; i <= prices.length - 1; i++) {
+      const currentPrice = prices[i];
+      const nextPrice = prices[i + 1];
+      const buyPrice = prices[buyDayIndex];
+      const sellPrice = prices[sellDayIndex];
+
+      if (buyPrice > sellPrice) {
+        buyDayIndex = sellDayIndex;
+        sellDayIndex = buyDayIndex + 1;
+      } else if (currentPrice > sellPrice) {
+        sellDayIndex = i;
+      } else if (buyPrice >= sellPrice
+        && sellPrice > currentPrice) {
+        buyDayIndex = i;
+        sellDayIndex = i + 1;
+      } else if (sellPrice < currentPrice) {
+        sellDayIndex = i;
+      }
+    }
+
+    return prices[buyDayIndex] < prices[sellDayIndex]
+      ? [buyDayIndex, sellDayIndex] : [];
+  }
+
+  const bestDays1 = findProfit([13, 6, 3, 4, 10, 2, 3]);
+  const bestDays2 = findProfit([13, 5, 5, 2, 6]);
+  const bestDays3 = findProfit([1, 6, 4, 10, 2, 11]);
+  const bestDays4 = findProfit([4, 4, 3, 1, 1]);
+
+  console.log(bestDays1); // [2, 4]
+  console.log(bestDays2); // [3, 4]
+  console.log(bestDays3); // [0, 5]
+  console.log(bestDays4); // []
+});
+
+
+
+// Реалізувати затримку для виклику функцій
+(function () {
+  function someFn() {
+    console.log(arguments);
+  }
+
+  Function.prototype.delay = function (delay) {
+    return function(...args) {
+      setTimeout(() => {
+        this(...args);
+      }, delay);
+    }.bind(this);
+  };
+
+  const someFnWithDelay = someFn.delay(3000);
+
+  someFn("arg1", 2, []);
+  someFnWithDelay("arg2", 2, []);
+});
+
+
+
+// Порахувати вершини дерева
+(function () {
+  const binaryTree = {
+    value: 1,
+    right: {
+      value: 1,
+      right: { value: 1 },
+      left: { value: 1 }
+    },
+    left: { value: 1 }
+  };
+
+
+  const sumTree = (tree) => {
+    let count = 0;
+
+    if (tree?.value) count += tree.value;
+
+    if (tree.left) count += sumTree(tree.left);
+    if (tree.right) count +=  sumTree(tree.right);
+
+    return count;
+  }
+
+  console.log(sumTree(binaryTree))
+});
+
+
+
 // ...
 (function () {
 
