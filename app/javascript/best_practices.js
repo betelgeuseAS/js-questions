@@ -384,6 +384,49 @@
 
 
 
+// Is url exists
+(function () {
+  export const urlExists = (url) => {
+    try {
+      const http = new XMLHttpRequest();
+
+      http.open("HEAD", url, false);
+      http.setRequestHeader("Access-Control-Allow-Origin", "*");
+      // http.setRequestHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+      // http.setRequestHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, x-client-key, x-client-token, x-client-secret, Authorization");
+      http.send();
+
+      return !(http.status >= 400 && http.status < 600); // return http.status != 404;
+    } catch (error) { return false; }
+  }
+});
+
+
+
+// Await addEventListener or event
+(function () {
+  const getMeta = async (url) => {
+    const img = new Image();
+    img.src = url;
+
+    // return new Promise((resolve) =>  btn.onclick = () => resolve());
+    return new Promise((resolve) =>  img.onload = function () {
+      resolve({
+        width: this.width,
+        height: this.height,
+        naturalWidth: this.naturalWidth
+      });
+    });
+
+    // img.addEventListener('load', function() {
+    //   console.log('>>>>>: ', this.naturalWidth);
+    //   console.log('>>>>> this: ', this);
+    // });
+  }
+});
+
+
+
 // ...
 (function () {
 

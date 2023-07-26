@@ -155,6 +155,54 @@
 
 
 
+// Solve problem: Can't perform a react state update on an unmounted component
+(function () {
+  import { useState, useEffect, useRef } from 'react';
+
+  // 👇️ extract logic into a reusable hook
+  function useIsMounted() {
+    const isMounted = useRef(false);
+
+    useEffect(() => {
+      isMounted.current = true;
+
+      return () => {
+        isMounted.current = false;
+      };
+    });
+
+    return isMounted;
+  }
+
+  const App = () => {
+    const [state, setState] = useState('');
+
+    // 👇️ use hook
+    const isMountedRef = useIsMounted();
+
+    useEffect(() => {
+      async function fetchData() {
+        const result = await Promise.resolve(['hello', 'world']);
+
+        // 👇️ only update state if the component is mounted
+        if (isMountedRef.current) {
+          setState(result);
+        }
+      }
+
+      fetchData();
+    }, [isMountedRef]);
+
+    return (
+      <div>
+        <h2>State: {JSON.stringify(state)}</h2>
+      </div>
+    );
+  };
+})();
+
+
+
 // ...
 (function () {
 

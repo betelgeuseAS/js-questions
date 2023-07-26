@@ -1326,6 +1326,52 @@
 
 
 
+// Створити сounter
+(function () {
+  // Method 1:
+  function createCounter() {
+    let count = 0;
+
+    function increment() {
+      count++;
+    }
+
+    function decrement() {
+      count--;
+    }
+
+    return {
+      count,
+      getCount: () => count,
+      increment,
+      decrement
+    };
+  }
+
+  const result = createCounter();
+
+  result.increment();
+  result.increment();
+
+  console.log(result.count); // 0
+  console.log(result.getCount()); // 2
+
+  // Method 2:
+  const createId = () => {
+    let id = 0;
+
+    return () => id++;
+  }
+
+  const getId = createId();
+
+  console.log(getId()); // 0
+  console.log(getId()); // 1
+  console.log(getId()); // 2
+});
+
+
+
 // ...
 (function () {
 
