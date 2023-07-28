@@ -30,3 +30,12 @@ A React hook for using keyboard shortcuts in components in a declarative way.
 
 10. dexie - https://dexie.org/
 Dexie.js is a wrapper library for indexedDB - the standard database in the browser.
+
+11. formik - https://formik.org/
+Build forms in React, without the tears.
+
+12. react-use - https://www.npmjs.com/package/react-use
+React hooks.
+
+13. react-window - https://github.com/bvaughn/react-window
+React components for efficiently rendering large lists and tabular data.
