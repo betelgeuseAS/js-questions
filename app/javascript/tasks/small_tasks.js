@@ -220,21 +220,34 @@
 // виведення buzz замість чисел, кратних 5;
 // виведення fizzbuzz замість чисел, кратних як 3, і 5.
 (function () {
+  // Variant 1
+  // const fizzBuzz = num => {
+  //   for(let i = 1; i <= num; i++) {
+  //     if(i % 3 === 0 && i % 5 === 0) {
+  //       console.log('fizzbuzz')
+  //     } else if(i % 3 === 0) {
+  //       console.log('fizz')
+  //     } else if(i % 5 === 0) {
+  //       console.log('buzz')
+  //     } else {
+  //       console.log(i)
+  //     }
+  //   }
+  // }
+  //
+  // fizzBuzz(15)
+
+  // Variant 2
   const fizzBuzz = num => {
-    for(let i = 1; i <= num; i++) {
-      if(i % 3 === 0 && i % 5 === 0) {
-        console.log('fizzbuzz')
-      } else if(i % 3 === 0) {
-        console.log('fizz')
-      } else if(i % 5 === 0) {
-        console.log('buzz')
-      } else {
-        console.log(i)
-      }
-    }
+    let result = '';
+
+    if(num % 2 === 0) result += 'fizz';
+    if(num % 3 === 0) result += 'buzz';
+
+    return result;
   }
 
-  fizzBuzz(15)
+  console.log(fizzBuzz(6)); // 'fizzbuzz'
 });
 
 
