@@ -1385,6 +1385,87 @@
 
 
 
+// Memorization
+(function () {
+  // Without memo
+  const clumsysquareWithoutMemo = (num) => {
+    let result = 0;
+    for (let i = 1; i <= num; i++) {
+      for (let j = 1; j <= num; j++) {
+        result++;
+      }
+    }
+    return result;
+  };
+
+  console.time("First call");
+  console.log(clumsysquareWithoutMemo(9467));
+  console.timeEnd("First call");
+
+  // Use the same value two times
+  console.time("Second call");
+  console.log(clumsysquareWithoutMemo(9467));
+  console.timeEnd("Second call");
+
+  console.time("Third call");
+  console.log(clumsysquareWithoutMemo(9467));
+  console.timeEnd("Third call");
+
+  // With memo
+  const memoize = (func) => {
+    const results = {};
+    return (...args) => {
+      const argsKey = JSON.stringify(args);
+      if (!results[argsKey]) {
+        results[argsKey] = func(...args);
+      }
+      return results[argsKey];
+    };
+  };
+
+  const clumsysquareWithMemo = memoize((num) => {
+    let result = 0;
+    for (let i = 1; i <= num; i++) {
+      for (let j = 1; j <= num; j++) {
+        result++;
+      }
+    }
+    return result;
+  });
+
+  console.time("First call");
+  console.log(clumsysquareWithMemo(9467));
+  console.timeEnd("First call");
+
+  // Use the same value two times
+  console.time("Second call");
+  console.log(clumsysquareWithMemo(9467));
+  console.timeEnd("Second call");
+
+  console.time("Third call");
+  console.log(clumsysquareWithMemo(9467));
+  console.timeEnd("Third call");
+})();
+
+
+
+// Написати функцію sleep, яка зупиняє виконання коду на визначений час.
+(function () {
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  const test = async () => {
+    console.log('Начало');
+    await sleep(2000); // Приостанавливаем выполнение на 2 секунды
+    console.log('Прошло 2 секунды');
+  }
+
+  test();
+})();
+
+
+
 // ...
 (function () {
 
