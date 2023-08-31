@@ -787,7 +787,7 @@
 
 
 
-// 22. Універсальна сума
+// 22. Універсальна сума (Каррінг)
 // Напишіть функцію, що складає 2 числа. Працювати функція повинна як показано на прикладах.
 (function () {
   function add(a, b) {
@@ -1121,7 +1121,7 @@
 
 
 
-// Замикання (Closures)
+// Замикання (Closures) (Каррінг)
 (function () {
   function sum(num) {
     let result = 0;
@@ -1445,7 +1445,7 @@
   console.time("Third call");
   console.log(clumsysquareWithMemo(9467));
   console.timeEnd("Third call");
-})();
+});
 
 
 
@@ -1462,7 +1462,48 @@
   }
 
   test();
-})();
+});
+
+
+
+// Написати власний promise all (Навіть збережений порядок)
+(function () {
+  function sleep(ms) {
+    return new Promise((resolve, reject) => {
+      setTimeout(resolve, ms)
+    })
+  }
+
+  function fetch1() {
+    return sleep(800).then(() => 1)
+  }
+
+  function fetch2() {
+    return sleep(500).then(() => 2)
+  }
+
+  function promiseAll(promises) {
+    const results = []
+    let count = 0
+
+    return new Promise((resolve, reject) => {
+      for (let i = 0; i < promises.length; i++) {
+        promises[i]().then((result) => {
+          count++
+          results[i] = result
+
+          if (count === promises.length) {
+            resolve(results)
+          }
+        }).catch((error) => reject(error))
+      }
+    })
+  }
+
+  promiseAll([fetch1, fetch2]).then((results) => {
+    console.log(results)
+  })
+});
 
 
 

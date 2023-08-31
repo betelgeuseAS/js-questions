@@ -202,6 +202,35 @@
 })();
 
 
+// Поліморфний компонент
+// Link - https://www.youtube.com/watch?v=pCZ2DeLNy0c&ab_channel=OldestJunior
+(function () {
+  import { ElementType, ReactNode, ComponentPropsWithoutRef } from 'react'
+
+  type Props<T extends ElementType> = {
+    tag?: T,
+  } & ComponentPropsWithoutRef<T>
+
+  function MyComponent<T extends ElementType>({ tag, children, ...rest }: Props<T>) {
+    const Component = tag || 'div'
+
+    return <Component {...rest}>{children}</Component>
+  }
+
+  export default function App() {
+    // Завдяки ComponentPropsWithoutRef, наприклад, MyComponent p tag="a" може приймати rest
+    // пропси які відносяться до а (наприклад href) і не зможе приймати, наприклад, type.
+    // Це ж правило валідне і для всіх інших MyComponent.
+    return (
+      <div className="App">
+        <MyComponent tag="a" href="https://www.google.com">I am link</MyComponent>
+        <MyComponent tag="button" type="submit">I am submit button</MyComponent>
+        <MyComponent>I am div</MyComponent>
+      </div>
+    )
+  }
+})();
+
 
 // ...
 (function () {
