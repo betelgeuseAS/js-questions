@@ -1790,6 +1790,551 @@
 
 
 
+// Знайти найбільший і найменший елемент у масиві, не використовуючи Math.max і Math.min.
+(function () {
+  function findMinMax(arr) {
+    let min = arr[0];
+    let max = arr[0];
+
+    for (let i = 1; i < arr.length; i++) {
+      const item = arr[i]
+
+      if (item < min) {
+        min = item;
+      } else if (item > max) {
+        max = item;
+      }
+    }
+
+    return { min, max };
+  }
+
+
+  const numbers = [5, 1, 3, 412, 12, 512];
+  const result = findMinMax(numbers);
+
+  console.log(`Минимальное значение: ${result.min}`);
+  console.log(`Максимальное значение: ${result.max}`);
+});
+
+
+
+// Обробка даних у масиві певним чином із рішенням O(n).
+// Необхідно обробити масив таким чином, щоб розподілити людей за групами міст.
+(function () {
+  const people = [
+    {
+      name: 'Alex',
+      city: 'Moscow',
+    },
+    {
+      name: 'Ivan',
+      city: 'Moscow',
+    },
+    {
+      name: 'Joe',
+      city: 'New York'
+    },
+    {
+      name: 'Johan',
+      city: 'Berlin'
+    },
+  ]
+
+  const groupByCity = (array) => {
+    const result = {}
+
+    for (const item of array) {
+      const { city, name } = item
+
+      if (!result[city]) {
+        result[city] = name
+      } else if(Array.isArray(result[city])) {
+        result[city].push(name)
+      } else {
+        result[city] = [result[city], name]
+      }
+    }
+
+    return result
+  }
+
+  console.log(groupByCity(people))
+});
+
+
+
+// Об'єднання інтервалів у масиві.
+(function () {
+  const array1 = [[1, 3], [2, 6], [8, 10], [15, 18]]; // [[1, 6], [8, 10], [15, 18]]
+  const array2 = [[1, 4], [4, 5]]; // [[1, 5]]
+  const array3 = [[11, 12], [2, 3], [5, 7], [1, 4], [8, 10], [6, 8]]; // [[1, 4], [5, 10], [11, 12]]
+
+  function merge(intervals) {
+    if (intervals.length < 2) return intervals
+
+    intervals.sort((a, b) => a[0] - b[0])
+
+    let result = [intervals[0]]
+
+    for (let interval of intervals) {
+      let recent = result[result.length - 1];
+
+      if (recent[1] >=  interval[0]) {
+        recent[1] = Math.max(recent[1], interval[1])
+      } else {
+        result.push(interval)
+      }
+    }
+
+    return result
+  }
+
+  console.log(merge(array1));
+  console.log(merge(array2));
+  console.log(merge(array3));
+})();
+
+
+
+// Перетворення об'єкта.
+(function () {
+  // Об'єкт на вхід
+  const object = {
+    a: {
+      d: {
+        h: 4
+      },
+      e: 2
+    },
+    b: 1,
+    c: {
+      f: {
+        g: 3,
+        k: {}
+      }
+    }
+  };
+
+  const addLevels = (obj) => {
+    const newObj = JSON.parse(JSON.stringify(obj));
+    const stack = [{ obj: newObj, level: 0 }];
+
+    while (stack.length > 0) {
+      const { obj, level } = stack.pop();
+
+      for (let key in obj) {
+        if (typeof obj[key] === 'object' && obj[key] !== null) {
+          obj[key].level = level + 1;
+          stack.push({ obj: obj[key], level: level + 1 });
+        }
+      }
+    }
+
+    newObj.level = 0
+
+    return newObj
+  }
+
+  console.log(addLevels(object));
+  console.log(object);
+
+  // Дані на вихід
+  /*
+  updatedObject {
+    a: { d: { h: 4, level: 2 }, e: 2, level: 1 },
+    b: 1,
+    c: { f: { g: 3, k: [Object], level: 2 }, level: 1 },
+    level: 0
+  }
+  */
+  // Object { a: { d: { h: 4 }, e: 2 }, b: 1, c: { f: { g: 3, k: {} } } }
+});
+
+
+
+// Напишіть функцію flattenObject(obj), яка приймає як аргумента вкладений об'єкт obj і повертає новий
+// об'єкт, в якому всі властивості об'єкта obj "розгладжені" (перетворені в однорівневу структуру), з
+// використанням точкової нотації для подання ієрархії властивостей.
+(function () {
+  const obj = {
+    a: {
+      b: {
+        c: 1,
+        d: 2
+      },
+      e: 3
+    },
+    f: 4
+  };
+
+  const flattenObject = (obj) => {
+    const flattened = {};
+    const stack = [];
+
+    stack.push({ obj, prefix: '' });
+
+    while (stack.length > 0) {
+      const { obj, prefix } = stack.pop();
+
+      for (let key in obj) {
+        const value = obj[key];
+        const newKey = prefix + key;
+
+        if (typeof value === 'object' && value !== null) {
+          stack.push({ obj: value, prefix: newKey + '.' });
+        } else {
+          flattened[newKey] = value;
+        }
+      }
+    }
+
+    return flattened;
+  }
+
+  const flattenedObj = flattenObject(obj);
+  console.log(flattenedObj);
+  // Результат: { "f": 4, "a.e": 3, "a.b.c": 1, "a.b.d": 2 }
+});
+
+
+
+// Перевірити, чи є заданий рядок паліндромом. Додамо умову, яка ігноруватиме символи пробілу,
+// розділових знаків тощо. Також будемо ігнорувати регістр.
+(function () {
+  const isEqual = (str1 = '', str2 = '') => {
+    return str1.toLowerCase() === str2.toLowerCase()
+  }
+
+  const isLetter = (char) => {
+    return char.toLowerCase() !== char.toUpperCase()
+  }
+
+  const isPalindrome = (str = '') => {
+    let start = 0
+    let end = str.length - 1
+
+    while(start < end) {
+      const firstChar = str[start]
+      const endChar = str[end]
+
+      if (!isLetter(firstChar)) {
+        start += 1;
+        continue;
+      }
+
+      if (!isLetter(endChar)) {
+        end -= 1;
+        continue;
+      }
+
+      if (!isEqual(firstChar, endChar)) {
+        return false
+      }
+
+      start += 1
+      end -= 1
+    }
+
+    return true
+  }
+
+  console.log(isPalindrome('Казак'));
+  console.log(isPalindrome(`Madam, I'm Adam`));
+  console.log(isPalindrome('А в Енисее - синева'));
+  console.log(isPalindrome('О, духи, от уборки микробу-то и худо'));
+  console.log(isPalindrome('Не палиндром'));
+});
+
+
+
+// Перетворити рядок на об'єкт, розділяючи властивості по крапці.
+(function () {
+  const str = 'one.two.three.four.five';
+  const arrStr = str.split('.')
+  const result = arrStr.reduceRight((acc, val) => {
+    return { [val]: acc }
+  }, {});
+
+  console.log(result);
+});
+
+
+
+// Перевірити, чи є задане число простим.
+(function () {
+  function isPrime(number) {
+    if (number <= 1) {
+      return false;
+    }
+
+    for (let i = 2; i <= Math.sqrt(number); i++) {
+      if (number % i === 0) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  console.log(isPrime(7)); // true
+  console.log(isPrime(12)); // false
+  console.log(isPrime(23)); // true
+  console.log(isPrime(100)); // false
+});
+
+
+
+// Обчислити факторіал заданого числа.
+(function () {
+  function factorial(n) {
+    if (n === 0 || n === 1) {
+      return 1;
+    }
+
+    let result = 1;
+
+    for (let i = 2; i <= n; i++) {
+      result *= i;
+    }
+
+    return result;
+  }
+
+  console.log(factorial(5)); // 120
+  console.log(factorial(0)); // 1
+  console.log(factorial(1)); // 1
+  console.log(factorial(10)); // 3628800
+})();
+
+
+
+// Знайти суму всіх чисел у заданому діапазоні.
+(function () {
+  function sumRange(start, end) {
+    const count = end - start + 1;
+    const sum = (count * (start + end)) / 2;
+
+    return sum;
+  }
+
+  console.log(sumRange(1, 5)); // 15
+  console.log(sumRange(0, 10)); // 55
+  console.log(sumRange(-3, 3)); // 0
+});
+
+
+
+// Реалізувати рекурсивну функцію для обчислення чисел Фібоначчі.
+(function () {
+  function fibonacci(n, cache = {}) {
+    if (n in cache) {
+      return cache[n];
+    }
+
+    if (n <= 1) {
+      return n;
+    }
+
+    const result = fibonacci(n - 1, cache) + fibonacci(n - 2, cache);
+    cache[n] = result;
+
+    return result;
+  }
+
+  console.log(fibonacci(6)); // 8
+  console.log(fibonacci(10)); // 55
+  console.log(fibonacci(15)); // 610
+
+
+  // Solving the problem through a loop to avoid stack overflow
+  function fibonacci2(n) {
+    if (n <= 1) {
+      return n;
+    }
+
+    let prevPrev = 0;
+    let prev = 1;
+    let result;
+
+    for (let i = 2; i <= n; i++) {
+      result = prevPrev + prev;
+      prevPrev = prev;
+      prev = result;
+    }
+
+    return result;
+  }
+
+  console.log(fibonacci2(6)); // 8
+  console.log(fibonacci2(10)); // 55
+  console.log(fibonacci2(15)); // 610
+});
+
+
+
+// Розгорнути вкладені масиви за допомогою рекурсії.
+(function () {
+  function flattenArray(arr) {
+    const stack = [...arr];
+    const result = [];
+
+    while (stack.length) {
+      const element = stack.pop();
+
+      if (Array.isArray(element)) {
+        stack.push(...element);
+      } else {
+        result.unshift(element);
+      }
+    }
+
+    return result;
+  }
+
+  const nestedArray = [1, [2, [3, 4], 5], 6];
+  console.log(flattenArray(nestedArray)); // [1, 2, 3, 4, 5, 6]
+});
+
+
+
+// Реалізувати власні методи map, filter, reduce. Необхідно зберегти всі ті можливості, що
+// є у нативних методів: звернення через крапку, отримання всіх необхідних аргументів.
+(function () {
+  Array.prototype.myFilter = function(callback) {
+    const result = []
+
+    for (let index = 0; index < this.length; index++) {
+      const isTrue = callback(this[index], index, this)
+
+      if (!isTrue) continue
+
+      result.push(this[index]);
+    }
+
+    return result;
+  }
+
+  const arrForFilter = [4, 5, 6]
+  const arrFilter = arrForFilter.myFilter((item) => item <= 5)
+
+  console.log(arrFilter);
+
+  Array.prototype.myMap = function(callback) {
+    const result = []
+
+    for (let index = 0; index < this.length; index++) {
+      result.push(callback(this[index], index, this));
+    }
+
+    return result;
+  }
+
+  const arrForMap = [1, 2, 3]
+  const arrMap = arrForMap.myMap((a) => a + 5)
+
+  console.log(arrMap);
+
+  Array.prototype.myReduce = function(callback, initialValue) {
+    const isExistInitialValue = initialValue !== undefined
+    let result = isExistInitialValue ? initialValue : this[0];
+
+    for (let index = 0; index < this.length; index++) {
+      if (!isExistInitialValue && index === 0) continue;
+      result = callback(result, this[index], index , this);
+    }
+
+    return result;
+  }
+
+  const arrForReduce = [1, 2, 3]
+  const arrReduce = arrForReduce.myReduce((a, b, index, array) => a + b)
+  const arrReduceWithInitial = arrForReduce.myReduce((a, b, index, array) => a + b, 5)
+
+  console.log(arrReduce, arrReduceWithInitial);
+});
+
+
+
+// Написати власні функції debounce і throttle.
+// Debounce очікує певний час перед повторним викликом функції. Throttle обмежує кількість викликів
+// функції протягом певного періоду. Гарантує, що функція викликається лише один раз, навіть якщо
+// подія запускається кілька разів.
+(function () {
+  function debounce (callback, time) {
+    let timeoutId = null
+
+    return function (...arguments) {
+      clearTimeout(timeoutId)
+
+      timeoutId = setTimeout(() => {
+        callback.apply(this, arguments)
+      }, time)
+    }
+  }
+
+  function handleInput(a, b) {
+    console.log('Input event debounced', a, b);
+  }
+
+  const debouncedInput = debounce(handleInput, 500);
+
+  debouncedInput(1, 2);
+  debouncedInput(2, 3);
+  debouncedInput(3, 4);
+
+  function throttle(callback, time) {
+    let isThrottled = false
+    let lastArgs = null
+    let lastContext = null
+
+    return function(...arguments) {
+      if (isThrottled) {
+        lastArgs = arguments
+        lastContext = this
+        return
+      }
+
+      callback.apply(this, arguments)
+      isThrottled = true
+
+      setTimeout(() => {
+        isThrottled = false
+        callback.apply(lastContext, lastArgs)
+        lastArgs = null
+        lastContext = null
+      }, time)
+    }
+  }
+
+  function handleResize() {
+    console.log('Window resized');
+  }
+
+  const throttledResize = throttle(handleResize, 500);
+
+  window.addEventListener('resize', throttledResize);
+});
+
+
+
+// Написати функцію sleep, яка зупиняє виконання коду на певний час.
+(function () {
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  const test = async () => {
+    console.log('Начало');
+    await sleep(2000); // Приостанавливаем выполнение на 2 секунды
+    console.log('Прошло 2 секунды');
+  }
+
+  test()
+});
+
+
+
 // ...
 (function () {
 
