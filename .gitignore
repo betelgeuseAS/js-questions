@@ -1,11 +1,5 @@
-# Dependecies
-/**/node_modules/
-
 # IDE
 /.idea/
-
-/dist/
-/.git/
 
 # Misc
 /**/_backstage
